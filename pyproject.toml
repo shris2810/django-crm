@@ -4,11 +4,13 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
+classifiers = [ "Programming Language :: Python :: 3 :: Only" ]
 dependencies = [
-    "django>=5.2,<6.0",
+  "django>=5.2,<6",
+  "pre-commit>=4.6",
 ]
 
 [dependency-groups]
 dev = [
-    "pip>=26.1.2",
+  "pip>=26.1.2",
 ]
