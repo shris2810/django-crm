@@ -5,6 +5,15 @@ default_language_version:
   python: python3.12
 
 repos:
+- repo: local
+  hooks:
+    - id: export-requirements
+      name: Export prod requirements.txt
+      entry: bash -c 'uv export --no-dev --no-hashes -o requirements.prod.txt'
+      language: system
+      pass_filenames: false
+      files: ^(pyproject\.toml|uv\.locks)$
+      always_run: false
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v5.0.0
   hooks:
