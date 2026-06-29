@@ -9,9 +9,13 @@ dependencies = [
   "django>=5.2,<6",
   "django-googler>=0.0.20",
   "pre-commit>=4.6",
+  "python-dotenv>=1.2.2",
+  "rav>=0.4.3",
+  "whitenoise>=6.12",
 ]
 
 [dependency-groups]
 dev = [
   "pip>=26.1.2",
+  "rev>=0.1.1",
 ]

@@ -32,6 +32,8 @@ filelock==3.29.4
     # via
     #   python-discovery
     #   virtualenv
+fire==0.7.1
+    # via rav
 google-auth==2.55.0
     # via
     #   django-googler
@@ -42,6 +44,10 @@ identify==2.6.19
     # via pre-commit
 idna==3.18
     # via requests
+markdown-it-py==4.2.0
+    # via rich
+mdurl==0.1.2
+    # via markdown-it-py
 nodeenv==1.10.0
     # via pre-commit
 oauthlib==3.3.1
@@ -58,21 +64,37 @@ pyasn1-modules==0.4.2
     # via google-auth
 pycparser==3.0 ; implementation_name != 'PyPy' and platform_python_implementation != 'PyPy'
     # via cffi
+pygments==2.20.0
+    # via rich
 pyjwt==2.13.0
     # via djangorestframework-simplejwt
 python-discovery==1.4.2
     # via virtualenv
+python-dotenv==1.2.2
+    # via django-crm
 pyyaml==6.0.3
-    # via pre-commit
+    # via
+    #   pre-commit
+    #   rav
+rav==0.4.3
+    # via django-crm
 requests==2.34.2
-    # via requests-oauthlib
+    # via
+    #   rav
+    #   requests-oauthlib
 requests-oauthlib==2.0.0
     # via google-auth-oauthlib
+rich==15.0.0
+    # via rav
 sqlparse==0.5.5
     # via django
+termcolor==3.3.0
+    # via fire
 tzdata==2026.2 ; sys_platform == 'win32'
     # via django
 urllib3==2.7.0
     # via requests
 virtualenv==21.5.1
     # via pre-commit
+whitenoise==6.12.0
+    # via django-crm
