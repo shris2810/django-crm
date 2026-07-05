@@ -6,9 +6,12 @@ readme = "README.md"
 requires-python = ">=3.14"
 classifiers = [ "Programming Language :: Python :: 3 :: Only" ]
 dependencies = [
+  "dj-database-url>=3.1.2",
   "django>=5.2,<6",
   "django-googler>=0.0.20",
+  "django-timescaledb>=0.2.13",
   "pre-commit>=4.6",
+  "psycopg[binary]>=3.3.4",
   "python-dotenv>=1.2.2",
   "rav>=0.4.3",
   "whitenoise>=6.12",

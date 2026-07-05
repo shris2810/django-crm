@@ -8,10 +8,11 @@
 
   </div>
   <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
-    {{ analytics }}
-  </div>
-  <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
-    {{ reverse_events }} - {{ reverse_events.count }}
+    {% for data in analytics %}
+      <li>
+        {{ data.bucket }} - {{ data.type }} - {{ data.type_count }}
+      </li>
+    {% endfor %}
   </div>
 </section>
 

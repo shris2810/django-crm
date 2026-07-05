@@ -14,13 +14,18 @@ cryptography==49.0.0
     # via google-auth
 distlib==0.4.3
     # via virtualenv
+dj-database-url==3.1.2
+    # via django-crm
 django==5.2.15
     # via
+    #   dj-database-url
     #   django-crm
     #   django-googler
     #   djangorestframework
     #   djangorestframework-simplejwt
 django-googler==0.0.20
+    # via django-crm
+django-timescaledb==0.2.13
     # via django-crm
 djangorestframework==3.17.1
     # via
@@ -58,6 +63,10 @@ platformdirs==4.10.0
     #   virtualenv
 pre-commit==4.6.0
     # via django-crm
+psycopg==3.3.4
+    # via django-crm
+psycopg-binary==3.3.4 ; implementation_name != 'pypy'
+    # via psycopg
 pyasn1==0.6.3
     # via pyasn1-modules
 pyasn1-modules==0.4.2
@@ -91,7 +100,9 @@ sqlparse==0.5.5
 termcolor==3.3.0
     # via fire
 tzdata==2026.2 ; sys_platform == 'win32'
-    # via django
+    # via
+    #   django
+    #   psycopg
 urllib3==2.7.0
     # via requests
 virtualenv==21.5.1

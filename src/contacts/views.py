@@ -16,7 +16,9 @@ def contacts_detail_view(request, contact_id=None):
 
     trigger_event(instance, is_viewed=True, user=user, request=request)
 
-    analytics = events_services.get_event_analytics(instance)
+    analytics = events_services.get_event_analytics(
+        instance, gapfill=True, ignore_type=["created"]
+    )
     context = {"contact": instance, "analytics": analytics}
     return render(request, "contacts/detail.html", context)
 

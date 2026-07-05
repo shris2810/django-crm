@@ -2,6 +2,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.conf import settings
+from timescale.db.models.models import TimescaleModel
 
 # from contacts.models import Contact
 
@@ -10,7 +11,7 @@ User = settings.AUTH_USER_MODEL
 
 # this model is essentially an activity log or audit log.
 # time series model
-class Event(models.Model):
+class Event(TimescaleModel):
     class EventType(models.TextChoices):
         # enum = "db_val", "display_val"
         UNKNWON = "unknown", "unknown event type"
@@ -34,8 +35,8 @@ class Event(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     content_object = GenericForeignKey("content_type", "object_id")
 
-    timestamp = models.DateTimeField(auto_now_add=True)
+    # timestamp = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
+    class Meta:  # type: ignore
         #  db index
         indexes = [models.Index(fields=["content_type", "object_id"])]
