@@ -7,13 +7,72 @@
     {% include "contacts/snippets/contact-card.html" with contact=contact detail=True %}
 
   </div>
-  <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
-    {% for data in analytics %}
-      <li>
-        {{ data.bucket }} - {{ data.type }} - {{ data.type_count }}
-      </li>
-    {% endfor %}
-  </div>
 </section>
+
+<div>
+  <canvas id="viewedChart"></canvas>
+</div>
+
+<div>
+  <canvas id="savedChart"></canvas>
+</div>
+
+<div id="my-data">
+  {{ analytics|json_script:"analytics" }}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
+
+<script>
+  const analyticsData = JSON.parse(document.getElementById("analytics").textContent)
+  console.log(analyticsData)
+
+  const labels = analyticsData.map(x=>x.bucket)
+  const viewedCount = analyticsData.map(x=>x.viewed_count)
+  const savedCount = analyticsData.map(x=>x.saved_count)
+  console.log(labels, viewedCount)
+  const viewdCtx = document.getElementById('viewedChart');
+  const savedCtx = document.getElementById('savedChart');
+
+
+  new Chart(viewdCtx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: '# of View ',
+        data: viewedCount,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  new Chart(savedCtx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: '# of Save',
+        data: savedCount,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+</script>
 
 {% endblock content %}

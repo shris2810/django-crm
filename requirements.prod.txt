@@ -39,12 +39,27 @@ filelock==3.29.4
     #   virtualenv
 fire==0.7.1
     # via rav
+google-api-core==2.31.0
+    # via google-api-python-client
+google-api-python-client==2.198.0
+    # via django-crm
 google-auth==2.55.0
     # via
     #   django-googler
+    #   google-api-core
+    #   google-api-python-client
+    #   google-auth-httplib2
     #   google-auth-oauthlib
+google-auth-httplib2==0.4.0
+    # via google-api-python-client
 google-auth-oauthlib==1.4.0
     # via django-googler
+googleapis-common-protos==1.75.0
+    # via google-api-core
+httplib2==0.32.0
+    # via
+    #   google-api-python-client
+    #   google-auth-httplib2
 identify==2.6.19
     # via pre-commit
 idna==3.18
@@ -63,6 +78,13 @@ platformdirs==4.10.0
     #   virtualenv
 pre-commit==4.6.0
     # via django-crm
+proto-plus==1.28.0
+    # via google-api-core
+protobuf==7.35.1
+    # via
+    #   google-api-core
+    #   googleapis-common-protos
+    #   proto-plus
 psycopg==3.3.4
     # via django-crm
 psycopg-binary==3.3.4 ; implementation_name != 'pypy'
@@ -77,6 +99,8 @@ pygments==2.20.0
     # via rich
 pyjwt==2.13.0
     # via djangorestframework-simplejwt
+pyparsing==3.3.2
+    # via httplib2
 python-discovery==1.4.2
     # via virtualenv
 python-dotenv==1.2.2
@@ -89,6 +113,7 @@ rav==0.4.3
     # via django-crm
 requests==2.34.2
     # via
+    #   google-api-core
     #   rav
     #   requests-oauthlib
 requests-oauthlib==2.0.0
@@ -103,6 +128,8 @@ tzdata==2026.2 ; sys_platform == 'win32'
     # via
     #   django
     #   psycopg
+uritemplate==4.2.0
+    # via google-api-python-client
 urllib3==2.7.0
     # via requests
 virtualenv==21.5.1
