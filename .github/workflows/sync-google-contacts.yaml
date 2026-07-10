@@ -13,4 +13,6 @@ jobs:
       uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990
     - name: Sync deps for Python
       run: uv sync --frozen
-      
+    - name: Run Django Management Command for contact sync
+      working-directory: ./src
+      run: run run python manage.py sync_contacts --max-results 2
