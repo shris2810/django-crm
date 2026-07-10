@@ -12,5 +12,5 @@ jobs:
     - name: Install uv with all available options
       uses: astral-sh/setup-uv@11f9893b081a58869d3b5fccaea48c9e9e46f990
     - name: Sync deps for Python
-      uses: uv sync --frozen
+      run: uv sync --frozen
       
