@@ -1,7 +1,7 @@
 src/mystaticfiles/vendors
 src/local-cdn
 src/mystaticfiles/custom-theme
-
+src/contacts/samples
 
 # Python-generated files
 __pycache__/

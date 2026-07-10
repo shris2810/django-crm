@@ -158,10 +158,23 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 GOOGLE_OAUTH_CLIENT_ID = os.environ.get("GOOGLE_OAUTH_CLIENT_ID")
 GOOGLE_OAUTH_CLIENT_SECRET = os.environ.get("GOOGLE_OAUTH_CLIENT_SECRET")
 
+# Must match EXACTLY the URI registered in Google Cloud Console → APIs & Services → Credentials
+# and must match the URL pattern mounted in urls.py: path("auth/", include("django_googler.urls.default"))
+# → resolves to: http://localhost:8000/auth/google/callback/
+GOOGLE_OAUTH_REDIRECT_URIS = [
+    "http://localhost:8000/auth/google/callback/",
+]
+
 GOOGLE_OAUTH_SCOPES = [
     "openid",
     "https://www.googleapis.com/auth/userinfo.email",
     "https://www.googleapis.com/auth/userinfo.profile",
+    # Google Contacts scopes — requires offline access to use refresh tokens
     "https://www.googleapis.com/auth/contacts.other.readonly",
     "https://www.googleapis.com/auth/contacts.readonly",
 ]
+
+# Store access token in session so views can call Google APIs (e.g. Contacts)
+GOOGLE_OAUTH_STORE_TOKENS = True
+# Save tokens to DB so refresh tokens survive across sessions
+GOOGLE_OAUTH_SAVE_TOKENS_TO_DB = True
