@@ -7,7 +7,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      GOOGLE_OAUTH_CLIENT_ID: "SOME"
+      DJANGO_DEBUG: "true"
+      GOOGLE_OAUTH_CLIENT_ID: ${{ GOOGLE_OAUTH_CLIENT_ID }}
+      GOOGLE_OAUTH_CLIENT_SECRET: ${{ OOGLE_OAUTH_CLIENT_SECRET }}
+      DATABASE_URL: ${{ DATABASE_URL }}
     steps:
     - name: Checkout django-crm
       uses: actions/checkout@v4
