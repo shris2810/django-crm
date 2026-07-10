@@ -6,6 +6,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      GOOGLE_OAUTH_CLIENT_ID: "SOME"
     steps:
     - name: Checkout django-crm
       uses: actions/checkout@v4
