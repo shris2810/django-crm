@@ -8,9 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DJANGO_DEBUG: "true"
-      GOOGLE_OAUTH_CLIENT_ID: ${{ GOOGLE_OAUTH_CLIENT_ID }}
-      GOOGLE_OAUTH_CLIENT_SECRET: ${{ OOGLE_OAUTH_CLIENT_SECRET }}
-      DATABASE_URL: ${{ DATABASE_URL }}
+      GOOGLE_OAUTH_CLIENT_ID: ${{ secrets.GOOGLE_OAUTH_CLIENT_ID }}
+      GOOGLE_OAUTH_CLIENT_SECRET: ${{ secrets.OOGLE_OAUTH_CLIENT_SECRET }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     steps:
     - name: Checkout django-crm
       uses: actions/checkout@v4
