@@ -1,0 +1,12 @@
+name: Sync Google Contacts
+
+on:
+  workflow_dispatch: 
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout django-crm
+      uses: actions/checkout@v4
+    
