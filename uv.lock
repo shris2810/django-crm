@@ -208,6 +208,7 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "pip" },
+    { name = "pre-commit" },
     { name = "rev" },
 ]
 
@@ -217,7 +218,7 @@ requires-dist = [
     { name = "django", specifier = ">=5.2,<6" },
     { name = "django-googler", specifier = ">=0.0.20" },
     { name = "django-timescaledb", specifier = ">=0.2.13" },
-    { name = "google-api-python-client", specifier = ">=2.198.0" },
+    { name = "google-api-python-client", specifier = ">=2.198" },
     { name = "pre-commit", specifier = ">=4.6" },
     { name = "psycopg", extras = ["binary"], specifier = ">=3.3.4" },
     { name = "python-dotenv", specifier = ">=1.2.2" },
@@ -228,6 +229,7 @@ requires-dist = [
 [package.metadata.requires-dev]
 dev = [
     { name = "pip", specifier = ">=26.1.2" },
+    { name = "pre-commit", specifier = ">=4.6.0" },
     { name = "rev", specifier = ">=0.1.1" },
 ]
 
