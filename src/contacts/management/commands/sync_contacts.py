@@ -34,8 +34,8 @@ class Command(BaseCommand):
                 )
         self.stdout.write(
             self.style.SUCCESS(
-                f"\n✓ Successfully synced: {success_count} of {users_qs.count()}"
+                f"\nSuccessfully synced: {success_count} of {users_qs.count()}"
             )
         )
         if fail_count > 0:
-            self.stdout.write(self.style.ERROR(f"✗ Failed: {fail_count}"))
+            self.stdout.write(self.style.ERROR(f"Failed: {fail_count}"))

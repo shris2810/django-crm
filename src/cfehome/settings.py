@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "contacts",
     "events",
     "profiles",
+    "deals",
 ]
 
 MIDDLEWARE = [

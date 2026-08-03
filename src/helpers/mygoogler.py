@@ -88,3 +88,5 @@ def parse_contact_info(data):
                 primary_name = names[0]
             contact_info["first_name"] = primary_name.get("givenName")
             contact_info["last_name"] = primary_name.get("familyName")
+        contacts.append(contact_info)
+    return contacts
