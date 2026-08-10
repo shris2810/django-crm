@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "events",
     "profiles",
     "deals",
+    "tasks",
 ]
 
 MIDDLEWARE = [
