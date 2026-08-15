@@ -4,10 +4,60 @@
 
 <section class="bg-white dark:bg-gray-900">
   <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
+
     {% include "contacts/snippets/contact-card.html" with contact=contact detail=True %}
 
-  </div>
-</section>
+    <!-- Reassignment Form for Admins -->
+    {% if users %}
+    <div class="mt-4 p-5 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Admin Tools: Reassign Contact</h3>
+        <form method="POST" action="{% url 'contact-reassign' contact.id %}" class="flex items-center space-x-4">
+            {% csrf_token %}
+            <select name="new_owner_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                {% for u in users %}
+                    <option value="{{ u.id }}" {% if u.id == contact.user.id %}selected{% endif %}>{{ u.username|default:u.email }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">
+                Reassign
+            </button>
+        </form>
+    </div>
+    {% endif %}
+
+    <!-- Linked Deals -->
+    <div class="mt-8">
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Deals</h2>
+        {% if deals %}
+        <ul class="space-y-2">
+            {% for deal in deals %}
+            <li class="p-4 bg-gray-50 border rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex justify-between">
+                <span class="font-medium text-gray-900 dark:text-white">{{ deal.get_stage_display }}</span>
+                <span class="font-bold text-green-600">${{ deal.value }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="text-gray-500 dark:text-gray-400">No deals linked to this contact.</p>
+        {% endif %}
+    </div>
+
+    <!-- Linked Tasks -->
+    <div class="mt-8 mb-8">
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Tasks</h2>
+        {% if tasks %}
+        <ul class="space-y-2">
+            {% for task in tasks %}
+            <li class="p-4 bg-gray-50 border rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex justify-between {% if task.is_completed %}opacity-50{% endif %}">
+                <span class="text-gray-900 dark:text-white">{{ task.title }}</span>
+                <span class="text-sm text-gray-500">{{ task.due_date }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p class="text-gray-500 dark:text-gray-400">No tasks linked to this contact.</p>
+        {% endif %}
+    </div>
 
 <div>
   <canvas id="viewedChart"></canvas>

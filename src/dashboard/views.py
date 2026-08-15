@@ -1,23 +1,33 @@
-from random import randint
-
 from django.conf import settings
-from django.shortcuts import redirect, render
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from profiles.decorators import admin_required
 
 TEMPLATES_DIR = settings.TEMPLATES_DIR
-print("TEMPLATES_DIR", TEMPLATES_DIR, TEMPLATES_DIR.exists())
 
 
-# request -> /dashboard -> django -> urls.py -> view -> response
-
-
+@login_required
 def dashboard_webpage(request, *args, **kwargs):
-    print(request.user, request.user.is_authenticated)
-    if not request.user.is_authenticated:
-        return redirect("/auth/google/login/")
-    my_value = str(request.user) + f"{randint(0, 129039109202)}"
+    # Route to the appropriate dashboard based on role
+    if hasattr(request.user, "profile") and request.user.profile.role == "admin":
+        return admin_dashboard_view(request, *args, **kwargs)
+
+    return sales_rep_dashboard_view(request, *args, **kwargs)
+
+
+@admin_required
+def admin_dashboard_view(request, *args, **kwargs):
     template_context = {
-        "my_value": my_value,
-        "not_actual_context": "now it's ready",
-        "colors": ["red", "blue"],
+        "role": "Admin",
+        "dashboard_title": "Team Dashboard",
+    }
+    return render(request, "dashboard/main.html", template_context)
+
+
+@login_required
+def sales_rep_dashboard_view(request, *args, **kwargs):
+    template_context = {
+        "role": "Sales Rep",
+        "dashboard_title": "Personal Dashboard",
     }
     return render(request, "dashboard/main.html", template_context)

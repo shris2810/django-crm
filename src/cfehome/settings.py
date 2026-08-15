@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ["*"]
 
 AUTH_USER_MODEL = "auth.User"  # default value
 LOGIN_REDIRECT_URL = "/"  # default : /accounts/profile
+LOGIN_URL = "/auth/google/login/"  # Redirect unauthorized users here instead of /accounts/login/
 
 # Application definition
 

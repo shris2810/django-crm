@@ -1,25 +1,31 @@
 {% if detail %}
 
-<div class="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-800 dark:border-gray-700">
-    <div class="p-5">
-        <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-            {{ contact.email }}
+<div class="bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-800 dark:border-gray-700">
+    <div class="p-5 w-full">
+        <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-2">
+            {{ contact.first_name }} {{ contact.last_name }}
+            <span class="text-sm font-medium px-2.5 py-0.5 rounded {% if contact.status == 'customer' %}bg-green-100 text-green-800{% else %}bg-blue-100 text-blue-800{% endif %}">
+                {{ contact.get_status_display }}
+            </span>
         </h1>
-
+        <div class="text-gray-500 dark:text-gray-400 space-y-1 mt-4">
+            <p><strong>Email:</strong> {{ contact.email }}</p>
+            {% if contact.phone %}<p><strong>Phone:</strong> {{ contact.phone }}</p>{% endif %}
+            {% if contact.company %}<p><strong>Company:</strong> {{ contact.company }}</p>{% endif %}
+            {% if contact.source %}<p><strong>Source:</strong> {{ contact.source }}</p>{% endif %}
+            <p><strong>Owner:</strong> {{ contact.user.username|default:contact.user.email }}</p>
+        </div>
     </div>
 </div>
 
 {% else %}
 
 <div class="items-center bg-gray-50 rounded-lg shadow sm:flex dark:bg-gray-800 dark:border-gray-700">
-    <a class="hidden" href="{{ contact.get_absolute_url }}">
-        <img class="w-full rounded-lg sm:rounded-none sm:rounded-l-lg" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/bonnie-green.png" alt="Bonnie Avatar">
-    </a>
     <div class="p-5">
         <h3 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-            <a href="{{ contact.get_absolute_url }}">{{ contact.email }}</a>
+            <a href="{{ contact.get_absolute_url }}">{{ contact.first_name|default:contact.email }} {{ contact.last_name }}</a>
         </h3>
-
+        {% if contact.company %}<p class="text-gray-500">{{ contact.company }}</p>{% endif %}
     </div>
 </div>
 
