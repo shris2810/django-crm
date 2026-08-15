@@ -38,4 +38,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("auth/", include("django_googler.urls.default")),
     path("deals/", include("deals.urls", namespace="deals")),
+    path("tasks/", include("tasks.urls", namespace="tasks")),
 ]

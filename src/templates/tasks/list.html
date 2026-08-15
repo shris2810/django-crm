@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto py-8 px-4">
+
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-gray-900">
+      {% if is_admin %}All Tasks{% else %}My Tasks{% endif %}
+    </h1>
+    <a href="{% url 'tasks:create' %}"
+       class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+      + New Task
+    </a>
+  </div>
+
+  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+    <ul class="divide-y divide-gray-200">
+      {% for task in tasks %}
+        <li class="px-6 py-4 flex items-center justify-between
+                   {% if task.is_completed %}opacity-50{% endif %}
+                   {% if not task.is_completed and task.due_date < today %}bg-red-50{% endif %}">
+
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-gray-900
+                      {% if task.is_completed %}line-through text-gray-400{% endif %}">
+              {{ task.title }}
+            </p>
+
+            <div class="mt-1 flex items-center gap-x-3 text-xs text-gray-500">
+              <span>
+                Contact:
+                <a href="{% url 'contact-detail' task.contact.id %}"
+                   class="text-indigo-600 hover:text-indigo-800 font-medium">
+                  {{ task.contact.first_name }} {{ task.contact.last_name }}
+                </a>
+              </span>
+
+              {% if not task.is_completed and task.due_date < today %}
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                  Overdue &mdash; due {{ task.due_date }}
+                </span>
+              {% else %}
+                <span>Due: {{ task.due_date }}</span>
+              {% endif %}
+
+              {% if is_admin %}
+                <span>Owner: {{ task.owner.username|default:task.owner.email }}</span>
+              {% endif %}
+            </div>
+          </div>
+
+          {% if not task.is_completed %}
+            <form method="POST" action="{% url 'tasks:complete' task.id %}" class="ml-4 shrink-0">
+              {% csrf_token %}
+              <button type="submit"
+                      class="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-green-50 hover:border-green-400 hover:text-green-700 focus:outline-none transition-colors">
+                &#10003; Mark Complete
+              </button>
+            </form>
+          {% else %}
+            <span class="ml-4 inline-flex items-center px-3 py-1.5 text-xs font-medium text-green-700">
+              &#10003; Done
+            </span>
+          {% endif %}
+
+        </li>
+      {% empty %}
+        <li class="px-6 py-12 text-center text-sm text-gray-500">
+          No tasks found.
+          <a href="{% url 'tasks:create' %}" class="text-indigo-600 hover:underline">Create one?</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+</div>
+{% endblock content %}
