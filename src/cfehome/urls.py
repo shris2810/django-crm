@@ -16,14 +16,15 @@ Including another URLconf
 """
 
 from django.contrib import admin
+from django.contrib.auth.views import LogoutView
 from django.urls import path, include
 
 from contacts.views import (
-    contacts_list_view,
-    contacts_detail_view,
     contact_reassign_view,
+    contacts_detail_view,
+    contacts_list_view,
 )
-from dashboard.views import dashboard_webpage
+from dashboard.views import dashboard_webpage, team_leaderboard_view
 
 urlpatterns = [
     path("", dashboard_webpage),
@@ -35,8 +36,14 @@ urlpatterns = [
     path("contacts/<int:contact_id>/", contacts_detail_view, name="contact-detail"),
     path("contacts/", contacts_list_view, name="contact-list"),
     path("dashboard/", dashboard_webpage),
+    path("team/", team_leaderboard_view, name="team-leaderboard"),
     path("admin/", admin.site.urls),
     path("auth/", include("django_googler.urls.default")),
+    path(
+        "auth/logout/",
+        LogoutView.as_view(next_page="/auth/google/login/"),
+        name="logout",
+    ),
     path("deals/", include("deals.urls", namespace="deals")),
     path("tasks/", include("tasks.urls", namespace="tasks")),
 ]

@@ -1,0 +1,157 @@
+{% extends 'dashboard/base.html' %}
+
+{% block head_title %}Team Dashboard — CRM{% endblock %}
+
+{% block content %}
+<div class="min-h-screen" style="background-color: #D0ECEA;">
+  <div class="max-w-6xl mx-auto py-8 px-6">
+
+    <!-- ─── Greeting ─────────────────────────────────────────────────────── -->
+    <div class="mb-8">
+      <h1 class="text-2xl font-bold" style="color: #0C4584;">{{ greeting }}</h1>
+      <p class="text-sm mt-1" style="color: #6B5348;">{{ today|date:"l, F j, Y" }}</p>
+    </div>
+
+    <!-- ─── Team KPI Cards ─────────────────────────────────────────────────────── -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+
+      <!-- Total Pipeline Value -->
+      <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <p class="text-xs font-semibold uppercase tracking-wider mb-2" style="color: #6B5348;">Total Pipeline Value</p>
+        <p class="text-3xl font-bold" style="color: #0C4584;">${{ team_pipeline_value|floatformat:0 }}</p>
+      </div>
+
+      <!-- Total Open Deals -->
+      <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <p class="text-xs font-semibold uppercase tracking-wider mb-2" style="color: #6B5348;">Total Open Deals</p>
+        <p class="text-3xl font-bold" style="color: #0C4584;">{{ team_open_deals }}</p>
+      </div>
+
+      <!-- Team Win Rate -->
+      <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <p class="text-xs font-semibold uppercase tracking-wider mb-2" style="color: #6B5348;">Team Win Rate</p>
+        <p class="text-3xl font-bold" style="color: #248F8D;">{{ team_win_rate }}%</p>
+      </div>
+
+      <!-- Team Overdue Tasks — turns red if count > 0 -->
+      {% if team_overdue_tasks > 0 %}
+      <div class="bg-red-50 rounded-xl shadow-sm p-6 border border-red-200">
+        <p class="text-xs font-semibold uppercase tracking-wider mb-2 text-red-500">Team Overdue Tasks</p>
+        <p class="text-3xl font-bold text-red-600">{{ team_overdue_tasks }}</p>
+      </div>
+      {% else %}
+      <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+        <p class="text-xs font-semibold uppercase tracking-wider mb-2" style="color: #6B5348;">Team Overdue Tasks</p>
+        <p class="text-3xl font-bold" style="color: #0C4584;">0</p>
+      </div>
+      {% endif %}
+
+    </div>
+
+    <!-- ─── Pipeline by Stage (Full Width) ─────────────────────────────────── -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-8">
+      <div class="px-6 py-4 border-b border-gray-100">
+        <h2 class="text-sm font-semibold" style="color: #0C4584;">Team Pipeline by Stage</h2>
+      </div>
+      <div class="px-6 py-4 space-y-4">
+        {% for stage in stage_data %}
+        <div>
+          <div class="flex justify-between items-end mb-1">
+            <span class="text-sm font-medium text-gray-700">
+              {% if stage.stage == 'new' %}New
+              {% elif stage.stage == 'contact_made' %}Contact Made
+              {% elif stage.stage == 'proposal_sent' %}Proposal Sent
+              {% elif stage.stage == 'negotiation' %}Negotiation
+              {% else %}{{ stage.stage|title }}
+              {% endif %}
+            </span>
+            <span class="text-sm font-bold text-gray-900">${{ stage.total_value|floatformat:0 }} <span class="text-xs font-normal text-gray-500 ml-1">({{ stage.count }} deals)</span></span>
+          </div>
+          <div class="w-full bg-gray-100 rounded-full h-2.5">
+            <div class="h-2.5 rounded-full" style="{{ stage.bar_style }}"></div>
+          </div>
+        </div>
+        {% empty %}
+        <p class="text-sm text-gray-500 text-center py-4">No open deals in the pipeline.</p>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- ─── Bottom Two Columns ──────────────────────────────────────────── -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- LEFT: Upcoming Team Tasks -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-100">
+          <h2 class="text-sm font-semibold" style="color: #0C4584;">Upcoming Team Tasks</h2>
+        </div>
+
+        <ul class="divide-y divide-gray-50">
+          {% for task in urgent_tasks %}
+          <li class="px-6 py-3 flex items-center justify-between gap-3
+                     {% if task.due_date < today %}bg-red-50{% endif %}">
+            <div class="min-w-0 flex-1">
+              <p class="text-sm font-medium text-gray-800 truncate">{{ task.title }}</p>
+              <p class="text-xs mt-0.5" style="color: #6B5348;">
+                Rep: {{ task.owner.first_name|default:task.owner.username }}
+                &nbsp;&middot;&nbsp;
+                {{ task.contact.first_name }} {{ task.contact.last_name }}
+                &nbsp;&middot;&nbsp;
+                {% if task.due_date < today %}
+                  <span class="text-red-600 font-medium">Overdue &mdash; {{ task.due_date }}</span>
+                {% else %}
+                  Due {{ task.due_date }}
+                {% endif %}
+              </p>
+            </div>
+          </li>
+          {% empty %}
+          <li class="px-6 py-8 text-center text-sm text-gray-400">
+            No pending tasks across the team.
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- RIGHT: Recent Closed Deals -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-100">
+          <h2 class="text-sm font-semibold" style="color: #0C4584;">Recent Closed Deals</h2>
+        </div>
+
+        <ul class="divide-y divide-gray-50">
+          {% for deal in recent_closed %}
+          <li>
+            <a href="{% url 'deals:detail' deal.id %}"
+               class="px-6 py-3 flex items-center justify-between gap-3 hover:bg-gray-50 transition-colors">
+              <div class="min-w-0 flex-1">
+                <p class="text-sm font-medium text-gray-800 truncate">
+                  {{ deal.contact.first_name }} {{ deal.contact.last_name }}
+                </p>
+                <p class="text-xs mt-0.5" style="color: #6B5348;">
+                  Rep: {{ deal.owner.first_name|default:deal.owner.username }}
+                  &nbsp;&middot;&nbsp;
+                  ${{ deal.value|floatformat:0 }}
+                </p>
+              </div>
+              <!-- Stage pill — color by stage group -->
+              {% if deal.stage == 'won' %}
+                <span class="shrink-0 text-xs font-semibold px-2.5 py-1 rounded-full bg-green-100 text-green-700">Won</span>
+              {% elif deal.stage == 'lost' %}
+                <span class="shrink-0 text-xs font-semibold px-2.5 py-1 rounded-full bg-red-100 text-red-700">Lost</span>
+              {% endif %}
+            </a>
+          </li>
+          {% empty %}
+          <li class="px-6 py-8 text-center text-sm text-gray-400">
+            No closed deals yet.
+          </li>
+          {% endfor %}
+        </ul>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock content %}
